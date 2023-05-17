@@ -4,7 +4,6 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
-import sun.tools.tree.ThisExpression;
 
 import java.awt.*;
 

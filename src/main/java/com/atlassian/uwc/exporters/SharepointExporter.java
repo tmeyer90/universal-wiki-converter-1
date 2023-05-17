@@ -20,7 +20,6 @@ import org.apache.axis.message.MessageElement;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import sun.tools.tree.AddExpression;
 
 import com.atlassian.confluence.extra.sharepoint.wrapper.SharePointWebServicesWrapper;
 import com.atlassian.uwc.ui.ConverterEngine;

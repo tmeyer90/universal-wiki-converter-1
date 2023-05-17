@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import sun.tools.tree.AddExpression;
 
 import com.atlassian.uwc.converters.tikiwiki.RegexUtil;
 import com.atlassian.uwc.ui.Page;

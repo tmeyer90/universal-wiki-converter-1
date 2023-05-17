@@ -195,8 +195,6 @@ public class ConverterEngine implements FeedbackHandler {
 	 * converts the files with the converterstrings, and hooks any feedback into the given ui
 	 * @param inputPages pages from the filesystem to be converted
 	 * @param converterStrings list of converters as strings which will be run on the pages
-	 * @param sendToConfluence true if the pages should be uploaded to confluence
-	 * @param wikitype The wiki type that's being converted into Confluence, ex: Mediawiki
 	 */
 	public void convert(List<File> inputPages, List<String> converterStrings, UWCUserSettings settings) {
 		//setup

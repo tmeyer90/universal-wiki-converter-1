@@ -1,154 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="??????" >
-    <!-- do I need a parent -->
-	<!-- is it the same for all pom.xml? -->
-	
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.atlassian.uwc</groupId>
     <artifactId>uwc</artifactId>
     <version>3.13.0</version>
 
-	<properties>
-		<file>uwc.properties</file>
-		<environment>env</environment>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<!-- compiler.debug>on</compiler.debug -->
-		<!-- value>-J-Dorg.xml.sax.driver=org.apache.xerces.parsers.SAXParser</value -->
-		<!-- name>gen-axis-code-marker-file<name> value="${gen-source-dir}/.axis-generated"/ -->
-	</properties>
-	
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.apache.bcel/bcel -->
-		<dependency>
-			<groupId>org.apache.bcel</groupId>
-			<artifactId>bcel</artifactId>
-			<version>5.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.adedayo.intellij.sdk/javac2 -->
-		<dependency>
-			<groupId>com.github.adedayo.intellij.sdk</groupId>
-			<artifactId>javac2</artifactId>
-			<version>142.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.geronimo.bundles/axis -->
-		<dependency>
-			<groupId>org.apache.geronimo.bundles</groupId>
-			<artifactId>axis</artifactId>
-			<version>1.4_2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/oro/oro -->
-		<dependency>
-			<groupId>oro</groupId>
-			<artifactId>oro</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->
-		<dependency>
-			<groupId>wsdl4j</groupId>
-			<artifactId>wsdl4j</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/axis/axis-wsdl4j -->
-		<dependency>
-			<groupId>axis</groupId>
-			<artifactId>axis-wsdl4j</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-discovery/commons-discovery -->
-		<dependency>
-			<groupId>commons-discovery</groupId>
-			<artifactId>commons-discovery</artifactId>
-			<version>0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml</groupId>
-			<artifactId>jaxrpc</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.junit</artifactId>
-			<version>4.12_1</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis-saaj</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.atlassian.confluence</groupId>
-			<artifactId>confluence-xmlrpc</artifactId>
-			<version>5.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-cli</groupId>
-			<artifactId>commons-cli</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>jtidy</groupId>
-			<artifactId>jtidy</artifactId>
-			<version>4aug2000r7-dev</version>
-		</dependency>
-		<!-- dependency>
-			<groupId>org.apache.xmlrpc</groupId>
-			<artifactId>xmlrpc-client</artifactId>
-			<version>3.1.3</version>
-		</dependency -->
-		<!-- https://mvnrepository.com/artifact/xmlrpc/xmlrpc -->
-		<dependency>
-    	<groupId>xmlrpc</groupId>
-    	<artifactId>xmlrpc</artifactId>
-    	<version>2.0.1</version>
-		</dependency>
+    <properties>
+        <file>uwc.properties</file>
+        <environment>env</environment>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!-- compiler.debug>on</compiler.debug -->
+        <!-- value>-J-Dorg.xml.sax.driver=org.apache.xerces.parsers.SAXParser</value -->
+        <!-- name>gen-axis-code-marker-file<name> value="${gen-source-dir}/.axis-generated"/ -->
+    </properties>
 
-		<dependency>
-			<groupId>org.java.net.substance</groupId>
-			<artifactId>substance</artifactId>
-			<version>6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-digester3 -->
-		<dependency>
-    	<groupId>org.apache.commons</groupId>
-    	<artifactId>commons-digester3</artifactId>
-    	<version>3.2</version>
-		</dependency>
-		<dependency>
-    	<groupId>net.antonioshome.swing</groupId>
-    	<artifactId>treewrapper</artifactId>
-    	<version>1.1.1.1</version>
-		</dependency>
-		<dependency>
-    	<groupId>org.jvnet.substance</groupId>
-    	<artifactId>substance</artifactId>
-    	<version>2.3final</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/org.apache.commons.codec -->
+
+        <!-- https://mvnrepository.com/artifact/org.apache.bcel/bcel -->
+        <dependency>
+            <groupId>org.apache.bcel</groupId>
+            <artifactId>bcel</artifactId>
+            <version>5.2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/bcel.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.adedayo.intellij.sdk/javac2 -->
+        <dependency>
+            <groupId>com.github.adedayo.intellij.sdk</groupId>
+            <artifactId>javac2</artifactId>
+            <version>142.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/javac2.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.geronimo.bundles/axis -->
+        <dependency>
+            <groupId>org.apache.geronimo.bundles</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4_2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/axis-1.2.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/oro/oro -->
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/jakarta-oro-2.0.8.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.5.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/wsdl4j-1.5.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/axis/axis-wsdl4j -->
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-wsdl4j</artifactId>
+            <version>1.5.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/wsdl4j-1.5.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/mail.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-discovery/commons-discovery -->
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-discovery-0.2.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.3</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-codec-1.3.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft</groupId>
+            <artifactId>sharepoint</artifactId>
+            <version>1.3</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/sharepoint-wrapper-1.0.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.apache</groupId>
+            <artifactId>mime</artifactId>
+            <version>1.3</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/apache-mime4j-0.6.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxrpc</artifactId>
+            <version>1.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/jaxrpc.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.junit</artifactId>
+            <version>4.12_1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/junit.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.13</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/log4j-1.2.13.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.4</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/axis-saaj-1.2.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.confluence</groupId>
+            <artifactId>confluence-xmlrpc</artifactId>
+            <version>5.2.0</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/confluence-xmlrpc-wrapper-v5.2.0.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-cli-1.2.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.0.0</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/dom4j-1.4-full.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.2.2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/jdom.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>4aug2000r7-dev</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/Tidy.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.1.3</version>
+        </dependency -->
+        <!-- https://mvnrepository.com/artifact/xmlrpc/xmlrpc -->
+        <dependency>
+            <groupId>xmlrpc</groupId>
+            <artifactId>xmlrpc</artifactId>
+            <version>2.0.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/xmlrpc-2.0.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.java.net.substance</groupId>
+            <artifactId>substance</artifactId>
+            <version>6.0</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/substance.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-lang-2.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-httpclient-3.0.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-digester3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-digester3</artifactId>
+            <version>3.2</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/commons-digester3-3.2-with-deps.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.antonioshome.swing</groupId>
+            <artifactId>treewrapper</artifactId>
+            <version>1.1.1.1</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/treewrapper.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet.substance</groupId>
+            <artifactId>substance</artifactId>
+            <version>4.3</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/substance.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>swinglayout</groupId>
+            <artifactId>swinglayout</artifactId>
+            <version>1.0</version>
+            <systemPath>/Users/tobias.meyer/git/universal-wiki-converter/lib/swing-layout-1.0.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+
+    </dependencies>
 </project>
