@@ -3778,7 +3778,7 @@ public class ConverterEngineTest extends TestCase {
 		assertTrue(file.exists());
 		List<File> files = new Vector<File>();
 		files.add(file);
-		List<Page> pages = tester.createPages(filter, files);
+		List<Page> pages = tester.createPages(filter, files, 0, 10);
 		assertNotNull(pages);
 		assertEquals(1, pages.size());
 		assertEquals(TEST_INPUT, pages.get(0).getName());
@@ -3791,7 +3791,7 @@ public class ConverterEngineTest extends TestCase {
 		assertTrue(file.exists());
 		List<File> files = new Vector<File>();
 		files.add(file);
-		List<Page> pages = tester.createPages(filter, files);
+		List<Page> pages = tester.createPages(filter, files,0 , 10);
 		assertNotNull(pages);
 		for (Page actual : pages) {
 			String title = actual.getName();

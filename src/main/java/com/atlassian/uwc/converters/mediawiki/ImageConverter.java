@@ -31,13 +31,13 @@ public class ImageConverter extends BaseConverter {
 	Logger log = Logger.getLogger(this.getClass());
 
 	public void convert(Page page) {
-		log.info("Converting Images - start");
+		log.debug("Converting Images - start");
 
 		String input = page.getOriginalText();
 		String converted = convertImages(input);
 		page.setConvertedText(converted);
 
-		log.info("Converting Images - complete");
+		log.debug("Converting Images - complete");
 	}
 
 	String image = 

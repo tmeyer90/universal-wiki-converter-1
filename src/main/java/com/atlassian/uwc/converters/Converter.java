@@ -39,4 +39,6 @@ public interface Converter {
      * @param properties
      */
 	public void setProperties(Properties properties);
+
+	public void clearErrors();
 }

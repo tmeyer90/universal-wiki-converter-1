@@ -20,7 +20,7 @@ public class EscapeBracesConverter extends BaseConverter {
 		String input = page.getOriginalText();
 		String converted = escapeBraces(input);
 		page.setConvertedText(converted);
-		log.info("Escaping Braces - complete");
+		log.debug("Escaping Braces - complete");
 	}
 
 	protected String escapeBraces(String input) {

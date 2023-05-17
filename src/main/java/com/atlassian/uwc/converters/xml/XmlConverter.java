@@ -54,13 +54,11 @@ public class XmlConverter extends BaseConverter {
 	
 	public void convert(Page page) {
 		log.debug("Xml Parser - Starting");
-		
 		XMLReader reader = getXmlReader();
 		if (reader == null) return;
 		//make sure incoming text is parsable
 		String backup = page.getOriginalText();
 		page.setOriginalText(enforceValidity(page.getOriginalText()));
-		
 		//prepare parser
 		DefaultXmlEvents eventshandler = null;
 		if (getProperties().containsKey("xmlevents")) { //get custom event handlers
@@ -70,7 +68,6 @@ public class XmlConverter extends BaseConverter {
 		parser.setProperties(getProperties());
 		reader.setContentHandler(parser);
 		reader.setErrorHandler(parser);
-		
 		//parse - this will change the page object's contents directly
 		try {
 			parse(page.getOriginalText(), reader, parser);

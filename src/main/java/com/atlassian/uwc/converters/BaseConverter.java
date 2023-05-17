@@ -102,6 +102,10 @@ public abstract class BaseConverter implements Converter, FeedbackHandler {
     	this.errors.addError(type, note, isFeedbackWindowMessage);
     }
 
+    public void clearErrors() {
+        this.errors.clear();
+    }
+
     public Properties getProperties() {
     	return this.properties;
     }

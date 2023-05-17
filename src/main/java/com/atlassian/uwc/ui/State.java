@@ -100,6 +100,12 @@ public class State extends Observable {
 		setChanged();
 		notifyObservers(StateType.MAX);
 	}
+
+	public void resetStep() {
+		this.step = 0;
+		setChanged();
+		notifyObservers(StateType.STEP);
+	}
 	
 	/**
 	 * @return the current position of the progress bar as a percentage 

@@ -361,87 +361,97 @@ public class ConverterEngine implements FeedbackHandler {
 
 		//create page objects - Recurse through directories, adding all files
 		FileFilter filter = createFilter(filterPattern);
-		List<Page> allPages = createPages(filter, pages);
 
-		//fix progressbar max, which is dependent on the previous two lists
-		int steps = getNumberOfSteps(pages.size(), allPages.size(), converterStrings.size(), converters.size(), sendToConfluence);
-		this.state.updateMax(steps);
+		int start = 0;
+		int step = 100;
+		boolean finished = false;
 
-
-		//convert the files
-		if (convertPages(allPages, converters)) {
-			//in case converting the pages disqualified some pages, we need to break if there are no pages left
-			if (allPages.size() < 1) {
-				String message = "All pages submitted were disqualified for various reasons. Could not complete conversion.";
-				log.warn(message);
-				this.errors.addError(Feedback.CONVERTER_ERROR, message, true);
-				this.state.updateMax(this.state.getStep()); //complete progress bar, prematurely
-				return;
+		do {
+			log.info("Batched converting: " + (start + step));
+			List<Page> allPages = createPages(filter, pages, start, step);
+			if (allPages.size() < step) {
+				finished = true;
 			}
-			//in case converting the pages disqualified some pages, we need to recompute progressbarmax
-			steps = getNumberOfSteps(pages.size(), allPages.size(), converterStrings.size(), converters.size(), sendToConfluence);
-			if (steps != this.state.getMax()) this.state.updateMax(steps);
+			start = start + step;
+			//fix progressbar max, which is dependent on the previous two lists
+			int steps = getNumberOfSteps(pages.size(), allPages.size(), converterStrings.size(), converters.size(), sendToConfluence);
+			this.state.updateMax(steps);
+			this.state.resetStep();
 
-			// do final required conversions. This step is seperate, due to state saving issues
-			convertWithRequiredConverters(allPages);
 
-			//save pages if engine-saves-to-disk property is true. Useful for debugging.
-			//We are making this opt-in because users that don't need it will get a speed boost with fewer disk calls
-			if (Boolean.parseBoolean(this.miscProperties.getProperty(PROPKEY_ENGINE_SAVES_TO_DISK, "false")))
-				savePages(allPages, filterPattern);
-			else log.debug("Engine Saves To Disk setting turned off.");
-
-			//handling page histories and not sorting on create
-			if (isHandlingPageHistories() && 
-					!(isPageHistorySortOnCreate())) {
-				allPages = sortByHistory(allPages);
-			}
-
-			if (hierarchyHandler == HierarchyHandler.HIERARCHY_BUILDER && hierarchyBuilder != null) {
-				//tell the hierarchy builder about the page histories framework
-				//do this here so that we're sure the page histories properties are set
-				if (hierarchyBuilder.getProperties() != null) { 
-					hierarchyBuilder.getProperties().setProperty("switch."+NONCONVERTERTYPE_PAGEHISTORYPRESERVATION, isHandlingPageHistories()+"");
-					if (getPageHistorySuffix() != null)	
-						hierarchyBuilder.getProperties().setProperty("suffix."+NONCONVERTERTYPE_PAGEHISTORYPRESERVATION, getPageHistorySuffix());
+			//convert the files
+			if (convertPages(allPages, converters)) {
+				//in case converting the pages disqualified some pages, we need to break if there are no pages left
+				if (allPages.size() < 1) {
+					String message = "All pages submitted were disqualified for various reasons. Could not complete conversion.";
+					log.warn(message);
+					this.errors.addError(Feedback.CONVERTER_ERROR, message, true);
+					this.state.updateMax(this.state.getStep()); //complete progress bar, prematurely
+					return;
 				}
-				//tell the hierarchy some other information
-				if (hierarchyBuilder.getProperties() != null) {
-					hierarchyBuilder.getProperties().setProperty("spacekey", settings.getSpace());
+				//in case converting the pages disqualified some pages, we need to recompute progressbarmax
+				steps = getNumberOfSteps(pages.size(), allPages.size(), converterStrings.size(), converters.size(), sendToConfluence);
+				if (steps != this.state.getMax()) this.state.updateMax(steps);
+
+				// do final required conversions. This step is seperate, due to state saving issues
+				convertWithRequiredConverters(allPages);
+
+				//save pages if engine-saves-to-disk property is true. Useful for debugging.
+				//We are making this opt-in because users that don't need it will get a speed boost with fewer disk calls
+				if (Boolean.parseBoolean(this.miscProperties.getProperty(PROPKEY_ENGINE_SAVES_TO_DISK, "false")))
+					savePages(allPages, filterPattern);
+				else log.debug("Engine Saves To Disk setting turned off.");
+
+				//handling page histories and not sorting on create
+				if (isHandlingPageHistories() &&
+						!(isPageHistorySortOnCreate())) {
+					allPages = sortByHistory(allPages);
 				}
-				//build the hierarchy
-				HierarchyNode root = hierarchyBuilder.buildHierarchy(allPages);
-				int currenttotal = root.countDescendants()-1; //-1 for the null root;
-				log.debug("number of nodes in the hierarchy = " + root.countDescendants());
-				//upload pages, if the user approves
-				if (sendToConfluence && this.running) { //check here so that hierarchy can impact collisions without upload
-					if (Boolean.parseBoolean(this.miscProperties.getProperty("onlyorphans", "false"))) {
-						log.debug("Orphan attachments only.");
-						noteAttachments(root);
-					} 
-					else {
-						writeHierarchy(root, currenttotal, settings.getSpace());
+
+				if (hierarchyHandler == HierarchyHandler.HIERARCHY_BUILDER && hierarchyBuilder != null) {
+					//tell the hierarchy builder about the page histories framework
+					//do this here so that we're sure the page histories properties are set
+					if (hierarchyBuilder.getProperties() != null) {
+						hierarchyBuilder.getProperties().setProperty("switch." + NONCONVERTERTYPE_PAGEHISTORYPRESERVATION, isHandlingPageHistories() + "");
+						if (getPageHistorySuffix() != null)
+							hierarchyBuilder.getProperties().setProperty("suffix." + NONCONVERTERTYPE_PAGEHISTORYPRESERVATION, getPageHistorySuffix());
 					}
-					handleOrphanAttachments();
+					//tell the hierarchy some other information
+					if (hierarchyBuilder.getProperties() != null) {
+						hierarchyBuilder.getProperties().setProperty("spacekey", settings.getSpace());
+					}
+					//build the hierarchy
+					HierarchyNode root = hierarchyBuilder.buildHierarchy(allPages);
+					int currenttotal = root.countDescendants() - 1; //-1 for the null root;
+					log.debug("number of nodes in the hierarchy = " + root.countDescendants());
+					//upload pages, if the user approves
+					if (sendToConfluence && this.running) { //check here so that hierarchy can impact collisions without upload
+						if (Boolean.parseBoolean(this.miscProperties.getProperty("onlyorphans", "false"))) {
+							log.debug("Orphan attachments only.");
+							noteAttachments(root);
+						} else {
+							writeHierarchy(root, currenttotal, settings.getSpace());
+						}
+						handleOrphanAttachments();
+					} else if (!sendToConfluence) {
+						log.debug("Send To Confluence setting turned off. --> Not uploading pages.");
+					}
+				} else { //no hierarchy
+					if (sendToConfluence && this.running) {//check here so that hierarchy can impact collisions without upload
+						writePages(allPages, settings.getSpace());
+						handleOrphanAttachments();
+					} else if (!sendToConfluence) {
+						log.debug("Send To Confluence setting turned off. --> Not uploading pages.");
+					}
 				}
-				else if (!sendToConfluence){
-					log.debug("Send To Confluence setting turned off. --> Not uploading pages.");
-				}
-			} else { //no hierarchy
-				if (sendToConfluence && this.running) {//check here so that hierarchy can impact collisions without upload
-					writePages(allPages, settings.getSpace());
-					handleOrphanAttachments();
-				}
-				else if (!sendToConfluence){
-					log.debug("Send To Confluence setting turned off. --> Not uploading pages.");
-				}
-			}
 
-			//check for namespace collisions and emit errors if found
-			//(after hierarchy has had a chance to make changes)
-			listCollisions(allPages);
-			clearAttachedFileList();
-		}	
+				//check for namespace collisions and emit errors if found
+				//(after hierarchy has had a chance to make changes)
+				listCollisions(allPages);
+				clearAttachedFileList();
+
+			}
+		} while (!finished);
 		log.info("Conversion Complete");
 	}
 
@@ -775,7 +785,7 @@ public class ConverterEngine implements FeedbackHandler {
 	 * @param inputPages   A list of files and directories that Pages should be created for.
 	 * @return A list of PageForXmlRpcOld objects for all files matching the pattern in the settings.
 	 */
-	protected List<Page> createPages(FileFilter filter, List<File> inputPages) {
+	protected List<Page> createPages(FileFilter filter, List<File> inputPages, int start, int step) {
 		String message = "Initializing Pages...";
 		this.state.updateNote(message);
 		log.info(message);
@@ -795,7 +805,11 @@ public class ConverterEngine implements FeedbackHandler {
 			log.debug("Number of page inputs (sorted): " + sorted.size());
 			return sorted;
 		}
-		return allPages;
+		if (start + step >= allPages.size()) {
+			return allPages.subList(start, allPages.size());
+		} else {
+			return allPages.subList(start, start + step);
+		}
 	}
 
 	/**
@@ -1243,7 +1257,6 @@ public class ConverterEngine implements FeedbackHandler {
 	protected Page convertPage(List<Converter> converters, Page page) {
 		if (page.getConvertedText() == null)
 			page.setConvertedText(page.getOriginalText()); //in case empty converter list
-
 		for (Converter converter : converters) {
 			try {
 				this.state.updateProgress();
@@ -1268,9 +1281,9 @@ public class ConverterEngine implements FeedbackHandler {
 			if (converter.getErrors().hasErrors()) {
 				this.hadConverterErrors = true;
 				this.state.updateNote(converter.getErrors().getFeedbackWindowErrorMessages());
+				converter.clearErrors();
 			}
 		}
-
 		return page;
 	}
 
@@ -2199,13 +2212,13 @@ public class ConverterEngine implements FeedbackHandler {
 
 	}
 
-	public String markupToXhtml(String markup) {
+	public String markupToXhtml(Page page) {
 		RemoteWikiBroker broker = RemoteWikiBroker.getInstance();
 		ConfluenceServerSettings confSettings = getConfluenceServerSettings(this.settings);
 		try {
-			return getContentAsXhtmlFormat(broker, confSettings, markup);
+			return getContentAsXhtmlFormat(broker, confSettings, page.getOriginalText());
 		} catch (Exception e) {
-			String errorMessage = "Could not transform wiki content from markup to xhtml.";
+			String errorMessage = "Could not transform wiki content from markup to xhtml on page " + page.getName() + " - Direct Link: " + page.getPath();
 			log.error(Feedback.REMOTE_API_ERROR + ": " + errorMessage);
 			this.errors.addError(Feedback.REMOTE_API_ERROR, errorMessage, true);
 			return null;
@@ -2219,7 +2232,7 @@ public class ConverterEngine implements FeedbackHandler {
 			page.setConvertedText(xhtml);
 		} catch (Exception e) {
 			String errorMessage = "Could not transform wiki content in page: '"+page.getName()+
-					"' from markup to xhtml.";
+					"' from markup to xhtml. Direct Link: " + page.getPath();
 			log.error(Feedback.REMOTE_API_ERROR + ": " + errorMessage);
 			this.errors.addError(Feedback.REMOTE_API_ERROR, errorMessage, true);
 		}

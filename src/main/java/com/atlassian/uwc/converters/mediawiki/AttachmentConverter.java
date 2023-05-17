@@ -23,10 +23,10 @@ public class AttachmentConverter extends BaseConverter {
 	ConfluenceSettingsForm confSettings = null;
 
 	public void convert(Page page) {
-		log.info("Converting Mediawiki Attachments -- starting");
+		log.debug("Converting Mediawiki Attachments -- starting");
         // scan the page and create a list of attachments
         addAttachmentsToPage(page, this.getAttachmentDirectory());
-		log.info("Converting Mediawiki Attachments -- complete");
+		log.debug("Converting Mediawiki Attachments -- complete");
 
 	}
 	
