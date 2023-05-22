@@ -1318,7 +1318,7 @@ public class ConverterEngine implements FeedbackHandler {
 				return;
 			}
 			this.state.updateProgress();
-			String outputFileLoc = outputDirName + File.separator + page.getName() + pattern;
+			String outputFileLoc = outputDirName + File.separator + page.getName() + ".txt";
 			FileUtils.writeFile(page.getConvertedText(), outputFileLoc);
 		}
 	}

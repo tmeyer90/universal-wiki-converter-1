@@ -33,9 +33,12 @@ public class JavaRegexConverter extends BaseConverter {
             if (NEWLINE==null) NEWLINE = System.getProperty("line.separator");
             replacement = replacement.replaceAll("NEWLINE", NEWLINE);
         }
-
-        // Compile the regex.
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern;
+        if (regex.contains("MULTILINE")) {
+            pattern = Pattern.compile(regex.replaceAll("MULTILINE", ""), Pattern.MULTILINE);
+        } else {
+            pattern = Pattern.compile(regex);
+        }
         // Get a Matcher based on the target string.
         Matcher matcher = pattern.matcher(page.getOriginalText());
         String converted =  matcher.replaceAll(replacement);
